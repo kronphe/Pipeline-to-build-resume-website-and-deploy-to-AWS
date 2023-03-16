@@ -53,7 +53,7 @@ Now, any changes made to our files in the bucket will be automatically versioned
 
 ## Step 3: Configure the CI/CD pipeline in GitLab to build and deploy our application to S3
 1.	Configure GitLab CI to build our resume. We can use a template or create our own configuration file to do this. Here is an example configuration file (.gitlab-ci.yml) created in the root directory of your repository (To create that file, let’s open our repository in GitLab and navigate to the root directory. Here, we can create a new file called .gitlab-ci.yml and paste the following contents:)
-=============
+
 stages:
     - build
 build website:
@@ -66,12 +66,12 @@ build website:
     artifacts:
         paths:
             - /builds/<our-gitlab-group-name-for-project>/<our-project-folder-name>
-=============
+
   
 This configuration file builds the content of <our-gitlab-group-name-for-project>/<our-project-folder-name> and stores it in the /usr/share/nginx/html/ directory. By the same time, it removes the .gitlab-ci.yml and .git/ from the artifacts.
 
 2.	Configure GitLab CI to upload our resume to the S3 bucket. We can use the AWS CLI to do this as indicated in the “deploy” stage of our configuration file (.gitlab-ci.yml). 
-=============
+
 stages:
     - build
     - test
@@ -120,7 +120,7 @@ production tests:
     script:
         - curl $APP_BASE_URL | grep "<our-index-file-title>"
 
-=============
+
 This configuration file (.gitlab-ci.yml) first builds your resume and stores it in the /usr/share/nginx/html/ directory. It tests to be sure that we have the index.html file in our artifacts (this test job is optional and can be skipped). It then uses the AWS CLI to upload the contents of the /usr/share/nginx/html/ directory to the S3 bucket we created earlier.
 Navigate to your repository in GitLab and click on "Settings".
 Click on "CI/CD" in the left sidebar.
@@ -133,7 +133,7 @@ S3_BUCKET_NAME: The name of your S3 bucket.
 Save your changes.
 
 Bucket Policies declaration in S3 for this project (Bucket/Permissions/Bucket Policy), then edit.
-=============
+
 {
   "Version": "2012-10-17",
       "Statement": [{
@@ -145,7 +145,7 @@ Bucket Policies declaration in S3 for this project (Bucket/Permissions/Bucket Po
           "Action": "s3:GetObject",
           "Resource": "arn:aws:s3::: S3_BUCKET_NAME/*"
 }
-=============
+
   
 ## Step 4: Create a CloudFront distribution for an S3 bucket: This will allow us to serve our resume securely over HTTPS.
   1. Open the AWS Management Console and navigate to the CloudFront service.
